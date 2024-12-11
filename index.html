@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perhitungan Nilai Hasil CPNS</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-all">
+
+    <div class="container mx-auto p-8">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold text-green-600 dark:text-green-400">Perhitungan Hasil CPNS</h1>
+            <p class="text-gray-600 dark:text-gray-300 mt-2">Masukkan nilai SKD dan SKB untuk menghitung hasil akhir.</p>
+        </div>
+
+        <form id="form" class="mt-6 space-y-4 max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md dark:bg-gray-800">
+            <div>
+                <label for="nama" class="block text-gray-700 dark:text-gray-300">Nama:</label>
+                <input type="text" id="nama" placeholder="Masukkan nama Anda" required class="w-full mt-2 p-2 border rounded-lg border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+            
+            <div>
+                <label for="skd" class="block text-gray-700 dark:text-gray-300">Nilai SKD:</label>
+                <input type="number" id="skd" placeholder="Masukkan nilai SKD" required class="w-full mt-2 p-2 border rounded-lg border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div>
+                <label for="skb" class="block text-gray-700 dark:text-gray-300">Nilai SKB:</label>
+                <input type="number" id="skb" placeholder="Masukkan nilai SKB" required class="w-full mt-2 p-2 border rounded-lg border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex justify-between mt-4">
+                <button type="submit" class="w-full bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 focus:outline-none transition">Hitung Nilai</button>
+                <button type="button" id="reset" class="w-full bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 focus:outline-none transition">Reset</button>
+            </div>
+        </form>
+
+        <h2 class="text-2xl text-center mt-10 text-gray-800 dark:text-gray-200">Hasil Perhitungan</h2>
+
+        <div class="overflow-x-auto mt-6">
+            <table id="hasil" class="min-w-full table-auto bg-white shadow-md rounded-lg dark:bg-gray-800">
+                <thead class="bg-green-500 text-white">
+                    <tr>
+                        <th class="px-6 py-3 text-left cursor-pointer" onclick="sortTable(0)">Nama</th>
+                        <th class="px-6 py-3 text-left cursor-pointer" onclick="sortTable(1)">Nilai SKD</th>
+                        <th class="px-6 py-3 text-left cursor-pointer" onclick="sortTable(2)">Nilai SKB</th>
+                        <th class="px-6 py-3 text-left cursor-pointer" onclick="sortTable(3)">Nilai Akhir</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelHasil">
+                    <!-- Hasil perhitungan akan muncul di sini -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
