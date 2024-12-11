@@ -1,58 +1,57 @@
 // script.js
 
-document.getElementById('form').addEventListener('submit', function(event) {
-    event.preventDefault();
+// Data peserta CPNS (nama dan nilai SKD, SKB) untuk contoh
+let participants = [];
 
-    // Ambil nilai dari form input
-    const nama = document.getElementById('nama').value;
-    const skd = parseFloat(document.getElementById('skd').value);
-    const skb = parseFloat(document.getElementById('skb').value);
+// Fungsi untuk menghitung nilai akhir
+function calculate() {
+  const nama = document.getElementById('nama').value.trim();
+  const skd = parseFloat(document.getElementById('skd').value);
+  const skb = parseFloat(document.getElementById('skb').value);
 
-    // Validasi input
-    if (!nama || isNaN(skd) || isNaN(skb)) {
-        alert('Mohon lengkapi semua data!');
-        return;
-    }
+  if (nama === "" || isNaN(skd) || isNaN(skb) || skd < 0 || skd > 550 || skb < 0 || skb > 500) {
+    alert("Masukkan data yang valid!");
+    return;
+  }
 
-    // Hitung nilai akhir
-    const nilaiAkhir = (skd * 0.4) + (skb * 0.6);
+  // Perhitungan nilai akhir
+  const nilaiAkhir = ((skd / 550) * 40) + ((skb / 500) * 60);
 
-    // Menambahkan data hasil perhitungan ke dalam tabel
-    const hasilTable = document.getElementById('tabelHasil');
-    const row = hasilTable.insertRow();
-    row.classList.add('border-b', 'hover:bg-gray-100');
-    row.innerHTML = `
-        <td class="px-6 py-3">${nama}</td>
-        <td class="px-6 py-3">${skd}</td>
-        <td class="px-6 py-3">${skb}</td>
-        <td class="px-6 py-3">${nilaiAkhir.toFixed(2)}</td>
-    `;
+  // Menambahkan peserta baru ke daftar
+  participants.push({ nama, skd, skb, nilaiAkhir });
 
-    // Mengurutkan tabel berdasarkan nilai akhir (descending)
-    sortTable(3);
-});
+  // Mengurutkan peserta berdasarkan nilai akhir (tertinggi ke terendah)
+  participants.sort((a, b) => b.nilaiAkhir - a.nilaiAkhir);
 
-// Fungsi untuk mengurutkan tabel berdasarkan kolom
-function sortTable(colIndex) {
-    const rows = Array.from(document.getElementById('tabelHasil').rows);
+  // Memperbarui tabel rangking
+  updateRankingTable();
 
-    // Urutkan baris berdasarkan kolom yang dipilih
-    rows.sort((a, b) => {
-        const valA = parseFloat(a.cells[colIndex].innerText);
-        const valB = parseFloat(b.cells[colIndex].innerText);
-        return valB - valA;  // Urutkan secara descending
-    });
+  // Menampilkan nilai akhir di halaman
+  document.getElementById('nilai-akhir').innerText = nilaiAkhir.toFixed(2);
 
-    // Menyusun kembali tabel dengan baris yang sudah diurutkan
-    const tbody = document.getElementById('tabelHasil');
-    tbody.innerHTML = '';  // Hapus isi tabel
-    tbody.append(...rows);  // Masukkan kembali baris yang sudah diurutkan
+  // Reset input setelah perhitungan
+  resetForm();
 }
 
-// Fitur Reset untuk menghapus data
-document.getElementById('reset').addEventListener('click', function() {
-    document.getElementById('nama').value = '';
-    document.getElementById('skd').value = '';
-    document.getElementById('skb').value = '';
-    document.getElementById('tabelHasil').innerHTML = '';  // Hapus semua hasil di tabel
-});
+// Fungsi untuk memperbarui tabel rangking
+function updateRankingTable() {
+  const tableBody = document.getElementById('ranking-table').getElementsByTagName('tbody')[0];
+  tableBody.innerHTML = ""; // Kosongkan tabel
+
+  participants.forEach((participant, index) => {
+    const row = tableBody.insertRow();
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${participant.nama}</td>
+      <td>${participant.nilaiAkhir.toFixed(2)}</td>
+    `;
+  });
+}
+
+// Fungsi untuk mereset form
+function resetForm() {
+  document.getElementById('nama').value = "";
+  document.getElementById('skd').value = "";
+  document.getElementById('skb').value = "";
+  document.getElementById('nilai-akhir').innerText = "-";
+}
